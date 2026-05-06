@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { gamesData, GameData } from '../../data/games';
+import { gamesData } from '../../data/games';
+import type { GameData } from '../../data/games';
 import { Play, Menu } from 'lucide-react';
 
 export function GameShowcaseSection() {

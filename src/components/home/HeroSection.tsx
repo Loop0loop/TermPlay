@@ -5,7 +5,7 @@ export function HeroSection() {
     <section className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-[#1a1a1a]">
       {/* Background Dim / Texture */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#111] via-[#222] to-[#111] opacity-50"></div>
-      
+
       {/* Vertical subtle lines (from screenshot 1) */}
       <div className="absolute inset-0 flex justify-between px-20 pointer-events-none opacity-10">
         <div className="w-[1px] h-full bg-white"></div>
@@ -19,23 +19,23 @@ export function HeroSection() {
       <div className="relative z-10 flex flex-col items-center justify-center text-center mt-10">
         {/* Fake icon for Hoyoplay Logo */}
         <div className="w-16 h-16 bg-white rounded-[20px] flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(255,255,255,0.3)]">
-           <div className="w-8 h-8 rounded-full border-4 border-black relative">
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-black rounded-full"></div>
-           </div>
+          <div className="w-8 h-8 rounded-full border-4 border-black relative">
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-black rounded-full"></div>
+          </div>
         </div>
 
         <h1 className="text-6xl font-black tracking-widest text-white mb-4 italic font-sans" style={{ textShadow: '0 4px 20px rgba(0,0,0,0.5)' }}>
-          HOYOPLAY
+          TermPlay
         </h1>
         <p className="text-lg text-gray-300 font-medium mb-10 tracking-wider">
-          손끝에서 시작되는 무한한 세계로의 여정
+          터미널에서 시작되는 무한한 세계로의 여정
         </p>
 
         <button className="bg-white/70 hover:bg-white/90 backdrop-blur-sm text-gray-800 px-12 py-3 rounded-lg text-lg font-bold transition-all shadow-lg border border-white/20">
           기대해 주세요
         </button>
       </div>
-      
+
       {/* Bottom Large Text */}
       <div className="absolute bottom-16 left-12 opacity-10 pointer-events-none z-0">
         <h2 className="text-[6rem] leading-[0.85] font-sans font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-transparent" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)' }}>

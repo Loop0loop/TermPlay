@@ -9,7 +9,7 @@ export interface GameData {
   releaseDate: string;
 }
 
-export const gamesData: GameData[] = [
+export const gamesData = [
   {
     id: "genshin",
     title: "원신",
@@ -46,4 +46,4 @@ export const gamesData: GameData[] = [
     accentColor: "pink",
     releaseDate: "2017-10-17",
   }
-];
+] satisfies [GameData, ...GameData[]];
