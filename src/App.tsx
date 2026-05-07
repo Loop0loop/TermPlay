@@ -8,7 +8,7 @@ import { PopularGamesSection } from './components/home/PopularGamesSection';
 
 export function App() {
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col font-sans selection:bg-purple-900/50">
+    <div className="min-h-screen bg-background text-foreground flex flex-col font-sans selection:bg-ring/30">
       <Header />
       
       <main className="w-full">
