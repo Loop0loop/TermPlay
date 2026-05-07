@@ -24,12 +24,7 @@ export interface ReleaseDownload {
   size: number;
 }
 
-const directAssetFallbacks: Record<Platform, string> = {
-  windows: `${latestDownloadBaseUrl}/TermPlay-0.2.3-win-x64.exe`,
-  mac: `${latestDownloadBaseUrl}/TermPlay-0.2.3-mac-arm64.dmg`,
-  linux: `${latestDownloadBaseUrl}/TermPlay-0.2.3-linux-x86_64.AppImage`,
-  unknown: `${latestDownloadBaseUrl}/TermPlay-0.2.3-win-x64.exe`,
-};
+
 
 async function fetchGitHubRelease(url: string): Promise<GitHubRelease> {
   const controller = new AbortController();
@@ -65,25 +60,12 @@ function detectPlatform(): Platform {
   return "unknown";
 }
 
-function chooseAsset(assets: GitHubReleaseAsset[], platform: Platform) {
-  const downloadable = assets.filter((asset) => {
-    const name = asset.name.toLowerCase();
-    return !name.endsWith(".yml") && !name.endsWith(".blockmap");
-  });
-
-  const candidatesByPlatform: Record<Platform, RegExp[]> = {
-    windows: [/win.*\.exe$/],
-    mac: [/mac.*\.dmg$/, /mac.*\.zip$/],
-    linux: [/linux.*\.appimage$/, /linux.*\.tar\.gz$/],
-    unknown: [/mac.*\.dmg$/, /win.*\.exe$/, /linux.*\.appimage$/],
-  };
-
-  for (const pattern of candidatesByPlatform[platform]) {
-    const asset = downloadable.find((candidate) => pattern.test(candidate.name.toLowerCase()));
-    if (asset) return asset;
-  }
-
-  return downloadable[0];
+function getExpectedFilename(platform: Platform, version: string) {
+  const v = version.replace(/^v/, "");
+  if (platform === "windows") return `TermPlay-${v}-win-x64.exe`;
+  if (platform === "mac") return `TermPlay-${v}-mac-arm64.dmg`;
+  if (platform === "linux") return `TermPlay-${v}-linux-x86_64.AppImage`;
+  return `TermPlay-${v}-win-x64.exe`;
 }
 
 function manifestNameForPlatform(platform: Platform) {
@@ -92,14 +74,10 @@ function manifestNameForPlatform(platform: Platform) {
   return "latest.yml";
 }
 
-function parseManifestPath(manifest: string) {
-  const pathMatch = manifest.match(/^path:\s*(.+)$/m);
-  const urlMatch = manifest.match(/^url:\s*(.+)$/m);
-  const value = pathMatch?.[1] ?? urlMatch?.[1];
-
-  if (!value) return null;
-
-  return value.trim().replace(/^['"]|['"]$/g, "");
+function parseManifestVersion(manifest: string) {
+  const versionMatch = manifest.match(/^version:\s*(.+)$/m);
+  if (!versionMatch || !versionMatch[1]) return null;
+  return versionMatch[1].trim();
 }
 
 async function getManifestDownload(platform: Platform): Promise<ReleaseDownload | null> {
@@ -112,16 +90,16 @@ async function getManifestDownload(platform: Platform): Promise<ReleaseDownload 
   }
 
   const manifest = await response.text();
-  const assetPath = parseManifestPath(manifest);
+  const version = parseManifestVersion(manifest);
 
-  if (!assetPath) return null;
+  if (!version) return null;
 
-  const name = assetPath.split("/").pop() ?? assetPath;
+  const expectedName = getExpectedFilename(platform, version);
 
   return {
-    name,
-    url: assetPath.startsWith("http") ? assetPath : `${latestDownloadBaseUrl}/${encodeURIComponent(assetPath)}`,
-    version: "latest",
+    name: expectedName,
+    url: `${latestDownloadBaseUrl}/${expectedName}`,
+    version,
     platform,
     size: 0,
   };
@@ -138,27 +116,28 @@ export async function getLatestReleaseDownload(): Promise<ReleaseDownload | null
     try {
       release = await fetchGitHubRelease(releaseListApiUrl);
     } catch {
-      return getManifestDownload(platform).catch(() => ({
-        name: directAssetFallbacks[platform].split("/").pop() ?? "TermPlay",
-        url: directAssetFallbacks[platform],
-        version: "latest",
-        platform,
-        size: 0,
-      }));
+      return getManifestDownload(platform).catch(() => null);
     }
   }
 
-  const asset = chooseAsset(release.assets, platform);
+  const expectedName = getExpectedFilename(platform, release.tag_name);
+  const asset = release.assets.find((a) => a.name.toLowerCase() === expectedName.toLowerCase());
 
-  if (!asset) {
-    return getManifestDownload(platform);
+  if (asset) {
+    return {
+      name: asset.name,
+      url: asset.browser_download_url,
+      version: release.tag_name,
+      platform,
+      size: asset.size,
+    };
   }
 
   return {
-    name: asset.name,
-    url: asset.browser_download_url,
+    name: expectedName,
+    url: `${latestDownloadBaseUrl}/${expectedName}`,
     version: release.tag_name,
     platform,
-    size: asset.size,
+    size: 0,
   };
 }
