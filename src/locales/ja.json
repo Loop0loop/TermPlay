@@ -1,10 +1,6 @@
 {
   "brand": { "name": "TermPlay", "company": "TermPlay" },
-  "nav": { "home": "ホーム", "network": "言語", "link": "リンクをコピー", "feedback": "フィードバック", "effects": "ASCII 効果", "theme": "テーマ切り替え", "close": "ドックを隠す", "refresh": "更新", "appDrawer": "アプリ一覧", "profile": "プロフィール", "settings": "設定" },
+  "nav": { "home": "ホーム", "network": "言語", "link": "リンクをコピー", "theme": "テーマ切り替え", "close": "ドックを隠す", "appDrawer": "アプリ一覧", "profile": "プロフィール", "settings": "設定" },
   "hero": { "tagline": "ターミナルから始まる無限の世界への旅", "cta": "最新バージョンをダウンロード", "ctaLoading": "最新バージョンを確認中", "ctaRetry": "ダウンロード再試行", "ctaUnavailable": "ダウンロード準備失敗", "backgroundTitle": ["CONNECT TO", "THE INFINITE WORLD"], "motto": "Tech Otakus Save The World" },
-  "showcase": { "edition": "ターミナルエディション", "tabs": ["イベント", "お知らせ", "情報"], "play": "スタート", "updateAvailable": "最新ビルド", "updateSize": "自動検出", "actions": { "launcher": "ランチャー", "library": "ライブラリ", "assets": "アセット", "guide": "ガイド" } },
-  "popularGames": { "title": "TermPlay Core", "eyebrow": "Engine Library", "description": "TermPlayは単なるゲームリストを増やすランチャーではなく、ターミナルの感性とリアルタイムレンダリングを結びつける実験的なプレイヤーです。", "metrics": [ { "label": "active engines", "value": "02" }, { "label": "runtime target", "value": "desktop" }, { "label": "release channel", "value": "latest" } ], "scrollTop": "トップへ戻る" },
-  "footer": { "links": { "about": "About Us", "privacy": "プライバシーポリシー", "terms": "利用規約" }, "copyright": "Copyright © TermPlay. All Rights Reserved.", "language": "言語" },
-  "apiTester": { "method": "Method", "endpoint": "Endpoint", "send": "Send", "response": "Response", "responsePlaceholder": "Response will appear here..." },
-  "games": { "gascii": { "title": "GASCII", "shortDesc": "ASCII Core Engine", "description": "テキストベースのレンダリングとターミナル感性を実験するTermPlayのコアエンジン。", "updateTitle": "Gascii Core Engine Update" }, "mienjine": { "title": "MIENJINE", "shortDesc": "Character Runtime Engine", "description": "キャラクターランタイムとインタラクションレイヤーを検証するTermPlayのエンジンプロジェクト。", "updateTitle": "MiEnjine Core Engine Update" } }
+  "footer": { "links": { "about": "About Us", "privacy": "プライバシーポリシー", "terms": "利用規約" }, "copyright": "Copyright © TermPlay. All Rights Reserved." }
 }

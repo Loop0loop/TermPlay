@@ -1,10 +1,6 @@
 {
   "brand": { "name": "TermPlay", "company": "TermPlay" },
-  "nav": { "home": "Home", "network": "Language", "link": "Copy Link", "feedback": "Feedback", "effects": "ASCII Effects", "theme": "Toggle Theme", "close": "Hide Dock", "refresh": "Refresh", "appDrawer": "App List", "profile": "Profile", "settings": "Settings" },
+  "nav": { "home": "Home", "network": "Language", "link": "Copy Link", "theme": "Toggle Theme", "close": "Hide Dock", "appDrawer": "App List", "profile": "Profile", "settings": "Settings" },
   "hero": { "tagline": "A journey to the infinite world starting from the terminal", "cta": "Download Latest Version", "ctaLoading": "Checking latest version", "ctaRetry": "Retry Download", "ctaUnavailable": "Download Not Available", "backgroundTitle": ["CONNECT TO", "THE INFINITE WORLD"], "motto": "Tech Otakus Save The World" },
-  "showcase": { "edition": "Terminal Edition", "tabs": ["Events", "Notices", "Info"], "play": "Play", "updateAvailable": "Latest Build", "updateSize": "Auto-detect", "actions": { "launcher": "Launcher", "library": "Library", "assets": "Assets", "guide": "Guide" } },
-  "popularGames": { "title": "TermPlay Core", "eyebrow": "Engine Library", "description": "TermPlay is not a launcher that simply expands a game list, but an experimental player binding terminal aesthetics with real-time rendering.", "metrics": [ { "label": "active engines", "value": "02" }, { "label": "runtime target", "value": "desktop" }, { "label": "release channel", "value": "latest" } ], "scrollTop": "Scroll to Top" },
-  "footer": { "links": { "about": "About Us", "privacy": "Privacy Policy", "terms": "Terms of Service" }, "copyright": "Copyright © TermPlay. All Rights Reserved.", "language": "Language" },
-  "apiTester": { "method": "Method", "endpoint": "Endpoint", "send": "Send", "response": "Response", "responsePlaceholder": "Response will appear here..." },
-  "games": { "gascii": { "title": "GASCII", "shortDesc": "ASCII Core Engine", "description": "TermPlay's core engine experimenting with text-based rendering and terminal aesthetics.", "updateTitle": "Gascii Core Engine Update" }, "mienjine": { "title": "MIENJINE", "shortDesc": "Character Runtime Engine", "description": "TermPlay's engine project validating character runtime and interaction layers.", "updateTitle": "MiEnjine Core Engine Update" } }
+  "footer": { "links": { "about": "About Us", "privacy": "Privacy Policy", "terms": "Terms of Service" }, "copyright": "Copyright © TermPlay. All Rights Reserved." }
 }

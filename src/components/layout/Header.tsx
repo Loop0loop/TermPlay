@@ -19,15 +19,10 @@ function getSystemPrefersDark() {
 export function Header() {
   const t = useI18n();
   const [isDockVisible, setIsDockVisible] = useState(true);
-  const [areEffectsEnabled, setAreEffectsEnabled] = useState(true);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const [themePreference, setThemePreference] = useState<ThemePreference>("system");
   const [systemPrefersDark, setSystemPrefersDark] = useState(getSystemPrefersDark);
   const isDarkMode = themePreference === "system" ? systemPrefersDark : themePreference === "dark";
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("termplay-effects-off", !areEffectsEnabled);
-  }, [areEffectsEnabled]);
 
   useEffect(() => {
     document.documentElement.classList.toggle("dark", isDarkMode);

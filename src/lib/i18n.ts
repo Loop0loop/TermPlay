@@ -16,8 +16,6 @@ export function setLocale(locale: Locale) {
   listeners.forEach(l => l());
 }
 
-export type GameCopyKey = keyof typeof locales["ko"]["games"];
-
 export function useI18n() {
   const [locale, setLocalLocale] = useState<Locale>(currentLocale);
   

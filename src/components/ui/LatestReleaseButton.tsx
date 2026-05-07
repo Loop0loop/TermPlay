@@ -5,7 +5,6 @@ import { useI18n } from "../../lib/i18n";
 
 interface LatestReleaseButtonProps {
   className?: string;
-  compact?: boolean;
 }
 
 function platformLabel(download: ReleaseDownload) {
@@ -15,7 +14,10 @@ function platformLabel(download: ReleaseDownload) {
   return "Release";
 }
 
-export function LatestReleaseButton({ className = "", compact = false }: LatestReleaseButtonProps) {
+const baseClassName =
+  "inline-flex items-center justify-center gap-3 rounded-full bg-brand-primary px-12 py-4 text-2xl font-black text-brand-primary-foreground transition hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+
+export function LatestReleaseButton({ className = "" }: LatestReleaseButtonProps) {
   const t = useI18n();
   const [download, setDownload] = useState<ReleaseDownload | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -68,12 +70,26 @@ export function LatestReleaseButton({ className = "", compact = false }: LatestR
     }
   };
 
+  if (download && !hasError && !isLoading) {
+    return (
+      <a
+        href={download.url}
+        className={`${baseClassName} cursor-pointer ${className}`}
+        aria-label={label}
+        title={download.name}
+      >
+        <Download size={22} />
+        <span>{buttonLabel}</span>
+      </a>
+    );
+  }
+
   return (
     <button
       type="button"
       onClick={startDownload}
       disabled={isLoading}
-      className={`inline-flex items-center justify-center gap-3 rounded-full bg-brand-primary text-brand-primary-foreground font-black transition hover:brightness-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${compact ? "px-8 py-4 text-xl" : "px-12 py-4 text-2xl"} ${className}`}
+      className={`${baseClassName} ${isLoading ? "cursor-wait opacity-80" : "cursor-pointer"} disabled:hover:brightness-100 ${className}`}
       aria-label={hasError ? t.hero.ctaRetry : label}
       title={download?.name ?? t.hero.cta}
     >
