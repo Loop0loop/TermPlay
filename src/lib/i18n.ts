@@ -1,93 +1,36 @@
-export const defaultLocale = "ko";
+import { useState, useEffect } from 'react';
+import ko from '../locales/ko.json';
+import en from '../locales/en.json';
+import ja from '../locales/ja.json';
 
-export const messages = {
-  ko: {
-    brand: {
-      name: "TermPlay",
-      company: "TermPlay",
-    },
-    nav: {
-      home: "홈",
-      network: "네트워크",
-      link: "링크 복사",
-      feedback: "피드백",
-      effects: "ASCII 효과",
-      theme: "명암 전환",
-      close: "도크 숨기기",
-      refresh: "새로고침",
-      appDrawer: "앱 목록",
-      profile: "프로필",
-      settings: "설정",
-    },
-    hero: {
-      tagline: "터미널에서 시작되는 무한한 세계로의 여정",
-      cta: "최신 버전 다운로드",
-      ctaLoading: "최신 버전 확인 중",
-      ctaRetry: "다운로드 다시 시도",
-      ctaUnavailable: "다운로드 준비 실패",
-      backgroundTitle: ["CONNECT TO", "THE INFINITE WORLD"],
-      motto: "Tech Otakus Save The World",
-    },
-    showcase: {
-      edition: "터미널 에디션",
-      tabs: ["이벤트", "공지사항", "정보"],
-      play: "시작",
-      updateAvailable: "최신 빌드",
-      updateSize: "자동 감지",
-      actions: {
-        launcher: "런처",
-        library: "라이브러리",
-        assets: "에셋",
-        guide: "가이드",
-      },
-    },
-    popularGames: {
-      title: "TermPlay Core",
-      eyebrow: "Engine Library",
-      description: "TermPlay는 게임 목록을 늘리는 런처가 아니라, 터미널 감성과 실시간 렌더링을 묶는 실험적 플레이어입니다.",
-      metrics: [
-        { label: "active engines", value: "02" },
-        { label: "runtime target", value: "desktop" },
-        { label: "release channel", value: "latest" },
-      ],
-      scrollTop: "맨 위로 이동",
-    },
-    footer: {
-      links: {
-        about: "About Us",
-        privacy: "개인정보처리방침",
-        terms: "이용약관",
-      },
-      copyright: "Copyright © TermPlay. All Rights Reserved.",
-      language: "언어",
-    },
-    apiTester: {
-      method: "Method",
-      endpoint: "Endpoint",
-      send: "Send",
-      response: "Response",
-      responsePlaceholder: "Response will appear here...",
-    },
-    games: {
-      gascii: {
-        title: "GASCII",
-        shortDesc: "ASCII Core Engine",
-        description: "텍스트 기반 렌더링과 터미널 감성을 실험하는 TermPlay의 코어 엔진.",
-        updateTitle: "Gascii Core Engine Update",
-      },
-      mienjine: {
-        title: "MIENJINE",
-        shortDesc: "Character Runtime Engine",
-        description: "캐릭터 런타임과 인터랙션 레이어를 검증하는 TermPlay의 엔진 프로젝트.",
-        updateTitle: "MiEnjine Core Engine Update",
-      },
-    },
-  },
-} as const;
+export const locales = { ko, en, ja };
+export type Locale = keyof typeof locales;
 
-export type Locale = keyof typeof messages;
-export type GameCopyKey = keyof typeof messages[typeof defaultLocale]["games"];
+export const defaultLocale: Locale = "ko";
 
-export function useI18n(locale: Locale = defaultLocale) {
-  return messages[locale];
+let currentLocale: Locale = defaultLocale;
+const listeners = new Set<() => void>();
+
+export function setLocale(locale: Locale) {
+  currentLocale = locale;
+  listeners.forEach(l => l());
+}
+
+export type GameCopyKey = keyof typeof locales["ko"]["games"];
+
+export function useI18n() {
+  const [locale, setLocalLocale] = useState<Locale>(currentLocale);
+  
+  useEffect(() => {
+    const handler = () => setLocalLocale(currentLocale);
+    listeners.add(handler);
+    return () => { listeners.delete(handler); };
+  }, []);
+
+  const t = locales[locale];
+  
+  return Object.assign({}, t, {
+    _switchLanguage: (newLocale: Locale) => setLocale(newLocale),
+    _currentLocale: locale
+  });
 }

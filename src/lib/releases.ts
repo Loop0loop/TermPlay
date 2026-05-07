@@ -56,9 +56,10 @@ async function fetchGitHubRelease(url: string): Promise<GitHubRelease> {
 
 function detectPlatform(): Platform {
   const userAgent = navigator.userAgent.toLowerCase();
+  const platform = navigator.platform.toLowerCase();
 
-  if (userAgent.includes("windows")) return "windows";
-  if (userAgent.includes("mac os") || userAgent.includes("macintosh")) return "mac";
+  if (userAgent.includes("windows") || platform.includes("win")) return "windows";
+  if (userAgent.includes("mac os") || userAgent.includes("macintosh") || platform.includes("mac")) return "mac";
   if (userAgent.includes("linux")) return "linux";
 
   return "unknown";
@@ -74,7 +75,7 @@ function chooseAsset(assets: GitHubReleaseAsset[], platform: Platform) {
     windows: [/win.*\.exe$/],
     mac: [/mac.*\.dmg$/, /mac.*\.zip$/],
     linux: [/linux.*\.appimage$/, /linux.*\.tar\.gz$/],
-    unknown: [/win.*\.exe$/, /mac.*\.dmg$/, /linux.*\.appimage$/],
+    unknown: [/mac.*\.dmg$/, /win.*\.exe$/, /linux.*\.appimage$/],
   };
 
   for (const pattern of candidatesByPlatform[platform]) {

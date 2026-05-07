@@ -48,6 +48,7 @@ export function LatestReleaseButton({ className = "", compact = false }: LatestR
     : download
       ? `${platformLabel(download)} ${t.hero.cta}`
       : t.hero.ctaUnavailable;
+  const buttonLabel = hasError ? t.hero.ctaRetry : label;
 
   const startDownload = async () => {
     setHasError(false);
@@ -77,7 +78,7 @@ export function LatestReleaseButton({ className = "", compact = false }: LatestR
       title={download?.name ?? t.hero.cta}
     >
       {isLoading ? <Loader2 className="animate-spin" size={22} /> : <Download size={22} />}
-      <span>{compact ? t.showcase.play : hasError ? t.hero.ctaRetry : label}</span>
+      <span>{buttonLabel}</span>
     </button>
   );
 }

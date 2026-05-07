@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { gamesData } from '../../data/games';
 import type { GameData } from '../../data/games';
-import { BookOpen, Box, Library, Menu, Rocket } from 'lucide-react';
+import { BookOpen, Box, Library, Rocket, ChevronRight, Play } from 'lucide-react';
 import { gameThemeByAccent } from '../../lib/gameTheme';
 import { useI18n } from '../../lib/i18n';
 import { LatestReleaseButton } from '../ui/LatestReleaseButton';
@@ -11,6 +11,7 @@ export function GameShowcaseSection() {
   const [activeGame, setActiveGame] = useState<GameData>(gamesData[0]);
   const activeGameCopy = t.games[activeGame.copyKey];
   const activeTheme = gameThemeByAccent[activeGame.accentColor];
+
   const actionItems = [
     { label: t.showcase.actions.launcher, icon: Rocket },
     { label: t.showcase.actions.library, icon: Library },
@@ -19,32 +20,21 @@ export function GameShowcaseSection() {
   ];
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-surface-canvas lg:pl-24">
-      <div className={`absolute inset-0 bg-gradient-to-br ${activeTheme.showcase} via-surface-canvas to-surface-section transition-colors duration-500`} />
-      <div className="termplay-raster-field absolute inset-0 opacity-55" />
-      <div className="absolute inset-0 bg-gradient-to-t from-surface-canvas via-transparent to-surface-canvas/20" />
-      {activeGame.id === "mienjine" ? <div className="termplay-character-silhouette" /> : null}
+    <section className="relative min-h-screen flex items-end pb-24 overflow-hidden bg-black lg:pl-24">
+      {/* Dynamic Backgrounds */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${activeTheme.showcase} via-black to-black transition-colors duration-1000 ease-out`} />
+      <div className="termplay-raster-field absolute inset-0 opacity-30" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+      
+      {activeGame.id === "mienjine" ? (
+        <div className="termplay-character-silhouette transition-opacity duration-1000 ease-in-out" />
+      ) : null}
 
-      <div className="relative z-10 grid min-h-screen grid-rows-[auto_1fr_auto] gap-8 px-6 pb-32 pt-32 md:px-14 lg:px-20 lg:pb-24">
-        <div className="flex items-start justify-between gap-6">
-          <div className="ml-0 md:ml-6">
-            <h2 className="text-6xl font-black italic tracking-tight text-white drop-shadow-xl md:text-8xl">
-              {activeGameCopy.title}
-            </h2>
-            <span className="mt-5 inline-flex rounded-md bg-blue-500 px-4 py-1 text-lg font-black text-white shadow-panel-glow">
-              {t.showcase.edition}
-            </span>
-          </div>
-
-          <div className="hidden gap-4 rounded-4xl border border-border bg-surface-panel/80 p-4 shadow-card-lifted backdrop-blur-lg lg:flex">
-            {["G", "M"].map((label, index) => (
-              <span key={label} className={`size-3 rounded-full ${index === 0 ? "bg-blue-400" : "bg-muted-foreground"}`} />
-            ))}
-          </div>
-        </div>
-
-        <div className="flex items-center">
-          <div className="flex w-20 flex-col items-center gap-4 rounded-4xl border border-border bg-surface-panel/70 py-5 shadow-panel-glow backdrop-blur-xl lg:-ml-3">
+      <div className="relative z-10 w-full max-w-screen-2xl mx-auto px-8 md:px-16 flex flex-col lg:flex-row lg:items-end justify-between gap-12">
+        {/* Left Content Area: Title & Navigation */}
+        <div className="flex flex-col gap-10 flex-1">
+          {/* Game Selection Toggle */}
+          <div className="flex items-center gap-4 bg-white/5 border border-white/10 p-2 rounded-2xl backdrop-blur-md w-fit">
             {gamesData.map((game) => {
               const isActive = activeGame.id === game.id;
               const gameCopy = t.games[game.copyKey];
@@ -52,56 +42,77 @@ export function GameShowcaseSection() {
                 <button
                   key={game.id}
                   onClick={() => setActiveGame(game)}
-                  className={`relative flex size-14 items-center justify-center rounded-2xl text-2xl font-black transition ${isActive ? "bg-surface-panel-muted text-white ring-2 ring-blue-400" : "text-muted-foreground hover:text-foreground"}`}
-                  aria-label={gameCopy.title}
-                  title={gameCopy.title}
+                  className={`flex items-center justify-center px-6 py-3 rounded-xl font-bold transition-all duration-300 ${
+                    isActive 
+                      ? "bg-white text-black shadow-lg scale-105" 
+                      : "text-white/60 hover:text-white hover:bg-white/10"
+                  }`}
                 >
-                  {game.marker}
-                  {isActive ? <span className="absolute -right-1 -top-1 size-3 rounded-full bg-brand-primary" /> : null}
+                  <span className="mr-2 text-xl italic">{game.marker}</span>
+                  <span>{gameCopy.title}</span>
                 </button>
               );
             })}
           </div>
-        </div>
 
-        <div className="grid gap-6 lg:grid-cols-[minmax(20rem,42rem)_1fr] lg:items-end">
-          <div className="space-y-5">
-            <div className="rounded-3xl border border-border bg-surface-panel/90 shadow-card-lifted backdrop-blur-xl">
-              <div className="flex gap-8 border-b border-border px-7 pt-6 text-xl font-black text-muted-foreground">
-                {t.showcase.tabs.map((tab, index) => (
-                  <button key={tab} className={`pb-5 ${index === 0 ? "border-b-4 border-blue-400 text-foreground" : "hover:text-foreground"}`}>
-                    {tab}
-                  </button>
-                ))}
-              </div>
-              <div className="flex items-center justify-between px-7 py-6 text-lg font-bold text-foreground">
-                <span>{activeGameCopy.updateTitle}</span>
-                <span className="text-muted-foreground">{activeGame.issueDate}</span>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-4 gap-4 rounded-3xl border border-border bg-surface-panel/90 p-5 shadow-card-lifted backdrop-blur-xl">
-              {actionItems.map(({ label, icon: Icon }) => (
-                <button key={label} className="flex flex-col items-center gap-3 rounded-2xl text-muted-foreground transition hover:text-foreground">
-                  <span className="flex size-16 items-center justify-center rounded-2xl border border-border bg-surface-panel-muted">
-                    <Icon size={28} />
-                  </span>
-                  <span className="text-sm font-black">{label}</span>
-                </button>
-              ))}
+          <div>
+            <h2 className="text-6xl md:text-8xl font-black italic tracking-tighter text-white drop-shadow-2xl">
+              {activeGameCopy.title}
+            </h2>
+            <div className="mt-4 flex items-center gap-4">
+              <span className="px-4 py-1.5 rounded-full bg-blue-500/20 text-blue-400 border border-blue-500/30 text-sm font-bold uppercase tracking-widest backdrop-blur-md">
+                {t.showcase.edition}
+              </span>
+              <span className="text-white/60 font-medium">v1.2.0 • {activeGame.issueDate}</span>
             </div>
           </div>
 
-          <div className="flex flex-col items-stretch gap-5 lg:items-end">
-            <div className="rounded-full bg-surface-canvas/90 px-8 py-4 text-center shadow-card-lifted ring-1 ring-border lg:text-left">
-              <p className="text-lg font-black">{t.showcase.updateAvailable}</p>
-              <p className="font-mono text-xl font-black text-muted-foreground">{t.showcase.updateSize}</p>
-            </div>
-            <div className="flex w-full max-w-xl overflow-hidden rounded-3xl shadow-brand-glow">
-              <LatestReleaseButton compact className="min-h-24 flex-1 rounded-none text-4xl" />
-              <button className="flex w-24 items-center justify-center border-l border-black/20 bg-brand-primary text-brand-primary-foreground" aria-label={t.nav.appDrawer} title={t.nav.appDrawer}>
-                <Menu size={36} />
+          {/* Quick Actions (Replacing the big grid) */}
+          <div className="flex flex-wrap gap-4 mt-4">
+            {actionItems.map(({ label, icon: Icon }) => (
+              <button 
+                key={label} 
+                className="flex items-center gap-3 px-6 py-4 rounded-2xl bg-black/40 border border-white/10 text-white/80 transition-all hover:bg-white/10 hover:text-white hover:border-white/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] backdrop-blur-md group"
+              >
+                <Icon size={20} className="text-white/60 group-hover:text-white transition-colors" />
+                <span className="font-semibold text-sm tracking-wide">{label}</span>
               </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Content Area: Download & Play */}
+        <div className="flex flex-col items-start lg:items-end gap-6 w-full lg:w-auto">
+          {/* Info Card */}
+          <div className="w-full lg:w-96 rounded-3xl bg-black/40 border border-white/10 backdrop-blur-xl overflow-hidden">
+            <div className="flex gap-6 border-b border-white/10 px-6 pt-5">
+              {t.showcase.tabs.map((tab, index) => (
+                <button key={tab} className={`pb-4 text-sm font-bold tracking-wide transition-colors relative ${index === 0 ? "text-white" : "text-white/50 hover:text-white/80"}`}>
+                  {tab}
+                  {index === 0 && <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-400 rounded-t-full shadow-[0_0_8px_rgba(96,165,250,0.8)]" />}
+                </button>
+              ))}
+            </div>
+            <div className="px-6 py-5 flex items-center justify-between group cursor-pointer hover:bg-white/5 transition-colors">
+              <span className="font-medium text-white/90 group-hover:text-white truncate pr-4">{activeGameCopy.updateTitle}</span>
+              <ChevronRight size={18} className="text-white/40 group-hover:text-white/80" />
+            </div>
+          </div>
+
+          {/* Play Button Area */}
+          <div className="w-full lg:w-96 flex flex-col gap-4">
+            <div className="flex justify-between items-center px-4">
+              <span className="text-white/60 text-sm font-medium tracking-wide">{t.showcase.updateAvailable}</span>
+              <span className="text-blue-400 text-sm font-mono font-bold">{t.showcase.updateSize}</span>
+            </div>
+            
+            {/* The actual play/download button */}
+            <div className="w-full relative group">
+              <div className="absolute inset-0 bg-blue-500 rounded-3xl blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500" />
+              <LatestReleaseButton 
+                compact 
+                className="w-full h-20 text-2xl rounded-3xl bg-white text-black hover:bg-gray-100 shadow-[0_0_40px_rgba(255,255,255,0.15)] flex items-center justify-center gap-3 relative z-10" 
+              />
             </div>
           </div>
         </div>
